@@ -19,10 +19,7 @@ levels() ## Shows the levels of a factor
 pbinom() ## cdf of the binomial distribution
 qbinom() ## returns the p-th percentile of the binomial distribution
 
-choose() ## Binomial coefficients. Number of possible Combinations of n elements 
-taken k by k.
-
-combn() # Generate all possible combinations of the elements of x taken m at a time (Order doesn't matter).
+choose() ## Binomial coefficients
 
 ## Datathlon R in a Hurry (Mr Darren Barken)
 head() ## Display the first six lines of a data set. We can specify the number 
@@ -68,7 +65,7 @@ ls("package:datasets") ## Returns objects stored in the specified package
 get("n", environment(cube)) ## Displays the value associated with the symbol "n"
 in the environment called "cube"
 rm() ## Removes selected objects from the environment
-rm(list = ls()) # Removes all objects from the environment
+rm(list = ls()) # Removes all objects from the environment (clear memory)
 dir() ## Files in Workind Directory
 list.files() ## Same as dir(). List all the files in the working directory.
 source() ## Load a function or a data set saved in a .R file
@@ -112,6 +109,8 @@ gl() ## Generate factor levels. gl(3, 4) creates three levels, with four repli-
 cations in each level. (categorical)
 cut() ## Generate factor levels based on breaks. For example, to
 categorize age levels.
+c(1:50) %% 3 ## Generates three levels, in this case, 1 2 0, and repeat it through 1:50
+It looks like it generates factor levels.
 table() ## Frequency of occurence for each level of the variable
 table() ## Also for contingency tables for the counts at each 
 combination of factor levels
@@ -279,8 +278,7 @@ of y, separated by a dot: "x1.y1" "x2.y2" "x3.y3" ...
 rnorm(1000) ## Returns 1000 random elements from a std normal population.
 sample(x, 100) ## Draws a sample of size n = 100 from the vector x.
 sample(35) ## Draws a sample of size 35 from a sequence of integers from 1 to 
-35, without replacement (this is a permutation). Used to generate random 
-permutations from 1:35. The same as sample(1:35).
+35, without replacement (this is a permutation). The same as sample(1:35).
 my_data == NA ## Returns all NA. We should use is.na(my_data).
 | The reason you got a vector of all NAs is that NA is not really a value, but just a
 | placeholder for a quantity that is not available. Therefore the logical expression is
@@ -369,17 +367,12 @@ combn() # Generate all possible combinations of the elements of x taken m at a t
 combinat::permn ## generates all possible permutations (order matters) without replacement.
 gtools::permutations ## All possible permutations (order matters), with replacement.
 permutations(3,3,repeats.allowed = T) ## 3^3 = 27 permutations, with replacement
-All possible results of the roll of two dice (sample space):
-gtools::permutations(6,2,repeats.allowed=T)
-
 rbinom(1, size = 100, prob = 0.7) ## returns a single number that represents the 
 number of successes (with p = 0.7) in 100 trials.
 rbinom(100, size = 1, prob = 0.7) ## returns a vector of length 100, with each
 element representing the outcome of a single bernoulli trial.
 replicate() ## replicate any functions: replicate(100, rpois(5, 10)) replicates 
 the function rpois(5, 10) 100 times.
-replicate(4,rnorm(10)) returns a matrix 10x4 with rnorm
-replicate is from the apply family.
 colMeans() ## returns the mean of each column.
 Internally, dates are stored as the number of days since 1970-01-01
 | and times are stored as either the number of seconds since 1970-01-01 (for 'POSIXct') or

@@ -59,7 +59,7 @@ plot(tincome, phys)
 abline(lm3)
 ```
 
-The plots indicate that the statistical relation of each pair of response 
+Plots indicate that the statistical relation of each pair of response 
 and predictor variable is linear, but the error variances seem to increase
 with the predictor.
 
@@ -173,7 +173,7 @@ greater proportion of the variation in $phys$, more than 90%, is reduced when $b
 is taken into account, rather than $pop$ and $tincome$.
 
 Together with the scatter plot, that suggests a linear relationship, the high
-coefficient of determination implies a got fit.
+coefficient of determination implies a good fit.
 It does not mean, however, that this regression is useful for predictions. 
 The usefulness of a regression
 function in making predictions is determined by the precision required by the
