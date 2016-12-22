@@ -1,0 +1,646 @@
+## R CRAN introduction
+mode()
+class()
+dim()
+length()
+attributes()
+$names ## Columns, or variables names
+$row.names ## Row, or observation names, from attributes()
+rownames() ## Returns a vector with row names
+tapply()
+outer() ## Returns an array that has a dimension that is the concatenated dim
+of the two arrays in the argument. e.g. outer(a, b, "+"), where a is a vector
+of length 4, and b is also of length 4, returns a matrix 4x4 containing all 
+possible sums between the vectors' elements.
+outer(a, b "*") is the same as a %o% b.
+factor() ## Lists the values of a columns and the levels
+levels() ## Shows the levels of a factor
+
+pbinom() ## cdf of the binomial distribution
+qbinom() ## returns the p-th percentile of the binomial distribution
+
+choose() ## Binomial coefficients. Number of possible Combinations of n elements 
+taken k by k.
+
+combn() # Generate all possible combinations of the elements of x taken m at a time (Order doesn't matter).
+
+## Datathlon R in a Hurry (Mr Darren Barken)
+head() ## Display the first six lines of a data set. We can specify the number 
+of rows to be displayed: head(objectname, 10) will show the firts 10 lines.
+tail() ## Display the last lines. As with head(), we can do tail(..., 10).
+plot() ## Simple scatter plot of a data set
+plot(mtcars[ ,2:5]) ## Scatter plot matrix
+stripchart(pm25 ~ region, data = pollution, vertical=T, 
+           method="stack", xlab="Region", ylab="pm25")
+Conditional dot (strip) plot.
+boxplot() Boxplots
+Conditional box plots:
+# Multiple boxplots
+boxplot(pm25 ~ region, data = pollution, col = "red")
+hist() Histograms
+hist(pollution$pm25, col = "green", breaks = 100)
+rug(pollution$pm25) ## Draws a sort of a fringe under the histogram
+# bars.
+abline() ## Draws a line over a plot
+barplot(table(pollution$region), col = "wheat", main = "Number of counties in each region") # Draws a bar plot.
+View() ## Displays a data set on the source window, in a new tab. Must be with capital V
+str() ## Displays the basic information of an object on the console (this function
+is good when we have many columns, better than using head()). Shows the internal
+structure of an object.
+rownames() ## Returns a vector with row names
+/dataset/$/columnname/ ## Shows only the selected /columnname/ from /dataset/
+/objectname/[c(T, F, T, ...)] ## We can reffer to positions inside objects with T or F, besides position numbers
+tapply() ## Filter lines/columns, applying some function in filtering
+write.csv() ## Creates a csv file on the Working Directory
+write.table() ## Creates a text file on the Working Directory
+
+## Coursera R programing
+## Coursera R programing
+## Coursera R programing
+## Coursera R programing
+## Coursera R programing
+
+getwd() ## Workind Directory
+setwd("path of the directory") ## Workind Directory
+ls() ## Shows objects stored on the environment
+ls(environment(...)) ## Returns objects stored in the specified enviroment
+ls("package:datasets") ## Returns objects stored in the specified package
+get("n", environment(cube)) ## Displays the value associated with the symbol "n"
+in the environment called "cube"
+rm() ## Removes selected objects from the environment
+rm(list = ls()) # Removes all objects from the environment
+dir() ## Files in Workind Directory
+list.files() ## Same as dir(). List all the files in the working directory.
+source() ## Load a function or a data set saved in a .R file
+Atomic classes of R objects: character, numerical (real), interger, complex and logical
+Types (class) of R objects: vectors, matrices, arrays, lists, factors, dates, POSIXct and POSIXt for time, missing values, data frames, data.table, names, functions, lm (linear models), ts (time series), nls (nonlinear least squares), tables, ... and many others, with specific applications.
+An atomic vector is a vector with only one class of objects, whereas a list is 
+a vector with different classes of objects. Matrices are atomic vectors with a 
+dimension attribute.
+3L ## The letter L next to the number coerces it to be an "integer" rather than a
+"mumeric" class.
+class() ## Show the class of an object
+Assignment operator: <-
+Auto-print vs print() function
+Each R line: expression (SAS we call it statement)
+1 is treated as real (1.000...), 1L is treated as interger
+Inf (1/0) can be used in calculations
+NaN: not a number (missing value)
+attributes() ##view, set or modify attributes: names, dimnames, dimensions, class, length, other attributes (metadata)
+vector("numeric", length = 10) ## creates a numerical vector, with 10 zeros.
+Coercion: vector(1.7, "a") will be coerced to a character vector. vector(TRUE, 3) will be coerced to a numeric vector. We don't get an error, coercion occurs behind the scenes instead. It is called 'implicit coercion'.
+as.numeric(), as.logical(), as.character(), as.complex() ## Coercing functions
+E.g:
+x <- 0:6 ## x will be the integer sequence from 0 to 6
+as.logical(x) ## Returns: FALSE, TRUE, TRUE, TRUE, TRUE, TRUE. 0 is False, anything else is True.
+as.vector(x, mode = "numeric") ## creates a numerical vector from the list x.
+Lists can contain different classes of objects.
+data.frame() ## Creates a data frame
+Data frames can also contain different classes. Each column is a variable, each row an observation. We can give names to each row using:
+row.names() ## Define row names in a data frame
+## It is possible to subset using row.names(), for example:
+row.names(na.cols)[na.cols > 0.20] returns those row names of 
+na.cols data set whose value is grate than 0.20.
+data.matrix() ## Converts a data frame in a matrix
+list() ## Creates a list of multiple class of objects
+Matrices are created columnwise.
+cbind() ## Can create matrix from vectors
+rbind() ## Can create matrix from vectors
+Factors: represent categorical (ordered or unordered) variables.
+factor() ## creates a factor. The result has two components: a vector with the values and a second called $levels.
+gl() ## Generate factor levels. gl(3, 4) creates three levels, with four repli-
+cations in each level. (categorical)
+cut() ## Generate factor levels based on breaks. For example, to
+categorize age levels.
+table() ## Frequency of occurence for each level of the variable
+table() ## Also for contingency tables for the counts at each 
+combination of factor levels
+table(cut(spacshu$tempF, temp.range.both), spacshu$damage)
+Also, for contingency tables:
+xtabs(~ obese + BirthPlace, data = nhanes.complete)
+# for contingency table in ranges (breaks)
+unclass() ## Strips out the underlying values of factors. R assigns the value in an alphabetical fashion. So the baseline level is the "lowest first letter". We can deffine our own baseline, by defining factors(..., levels = c(...)) or by using relevel()
+is.na() ## Returns a T F vector, where T marks the positions with NA values
+is.nan()
+A NaN is a NA, but not the opposite. is.na() detects both, is.nan() detects only NaN.
+dimnames() ## Attributes names to the rows and/or columns of matrices
+read.table() ## Import tabular data into R as data frame. Default sep = " ". Original file in .dat format.
+read.csv() ## Import tabular data into R as data frame. Default sep = ","
+read.csv(, na.string="Not Available", nrows = 5) ## Imports the first five rows,
+assigning NA where R sees the string "Not Available".
+system.time(largeData <- read.csv("huge-file.csv",
+  header = TRUE,
+  colClasses = c("character", "character", "complex", 
+    "factor", "factor", "character", "integer", 
+    "integer", "numeric", "character", "character",
+    "Date", "integer", "logical"))) ## Specifying the classes of each columns.
+This can save time on importing.
+sampleData <- read.csv("huge-file.csv", header = TRUE, nrows = 5)
+classes <- sapply(sampleData, class)
+largeData <- read.csv("huge-file.csv", header = TRUE, colClasses = classes)
+str(largeData) ## Keeps the original classes, but execute faster, since we
+explicitly specify each column class.
+smallData <- read.csv("small-file.csv", 
+ header = TRUE,
+ colClasses=c("variableName"="character")) ## Changes the class of selected
+columns.
+attach() ## Attaches a database to R search path. By doing this, we avoid having
+to use the symbol $ to reffer to a variable contained within a databese.
+detach() ## Detaches, removes a database from the search path.
+with() ## Avoids the excessive use of $ symbol.
+with(cars, plot(speed, dist, panel.last = abline(fit))) ## The variables inside
+plot() are from the data set "speed".
+nrow() ## Returns the number of rows in a matrix or data frame
+ncol() ## Returns the number of columns in a matrix or data frame
+names() ## Returns or coerces the names of a vector
+list(a = ..., b = ...) ## List with specified names of objects
+dimnames(m) <- list(c("a", "b"), c("c", "d")) ## Defines the row names ("a" and "b") and column names ("c", "d").
+str() ## Shows the internal structure of an object.
+dput() ## Returns an R code that can be used to reconstruct the object more efficiently, without having to use read.table or read.csv. (Metadata)
+rm() ## Removes objects from the environment.
+ls() ## Shows all the objectes stored in the environment.
+Textual data formats (preserves all the metadata):
+dput() ## Displays/saves an object as an R code (data as text--structures of metadata). One object per time.
+dget() ## Loads in an R file with an object as text. One object per time.
+dump() ## Saves objects to R files that can be latter loaded into R with source(). Works with multiple objects.
+source() ## Loads in R console a saved R code.
+Other conexions to external files: file(), gzfile(), bzfile(), url().
+readLines() ## Reads the first specified number of lines from a file
+writeLines() ## Writes a file from the elements of a vector, where each element is a new line.
+Subsetting: [ ] returns same class object, [[ ]], $
+x[x > "a"] ## Returns letters greater than "a"
+x[1, 2, drop = FALSE] ## Maintains the original dimension structure of x
+x[c(1:10, 90:100), ] ## Returns rows 1 through 10 and 90 through 100, for all columns of x
+Partial matching:
+x <- list(aardvac = 1:6)
+x$a ## Returns aardvac. R looks for something closer to "a".
+x[["a"]] ## Returns null
+x[["a", exact = FALSE]] ## Returns aardvac
+x.sub5 <- x.df[x.df$y %in% c(1, 4), ]
+bad <- c(FALSE, TRUE)
+!bad ## Bang operator. Returns the opposite of bad.
+complete.cases() ## !IMPORTANT Analyzes the missing values and returns TRUE for those positions where the elements are all non NA.
+na.omit() ## !IMPORTANT Eliminates from the data set all the rows
+that contain at least one NA, resulting in a new data set composed
+only of complete cases.
+subset() ## Function used to subset data structures.
+x.sub2 <- subset(x.df, y > 2 & V2 > 0.4, select = c(V1, V4))
+Aggregating multilevel tables with crossed factors
+level2 <- aggregate(class,list(classid = class$classid),mean)
+?aggregate
+by() ## Used to obtain summaries of combination of factors
+by(activate, list(treat, region.f), summary)
+Splits the data into subsets, computes summary statistics for each, and returns the result in a convenient form.
+sort5.hsb2 <- hsb2[order(hsb2$science, na.last=FALSE) , ] # Sorting, ordering a
+data set. Here, sort by science. NAs will be in the begining.
+sort8.hsb2 <- hsb2[order(hsb2$id, na.last=NA) , ] # Sort by id, removing the 
+missing cases.
+order() ## order(x) returns the indices that would put the initial vector x in order, so x[order(x)] sort the vector x in ascending order
+rank() ## Returns the relative position of each element in a vector
+na.omit() ## Remove missing values from the dataset
+dat.ordered <- dat[order(dat$id1, dat$id2), ] # Two level sorting.
+Control Structures: if else, for, while, repeat, break, next, return.
+for(i in seq_along(x)) ## It bases on the length of x.
+seq(along.with = x) ## The same thing as seq_along(x).
+function() ## Function Directive
+Functions are frist class R objects: i.e. you can treat functions as any other R object - you can use ("pass") a function as an argument of other function, you can nest functions in other functions.
+formals() ## Returns the arguments of a function as a list.
+args() ## Returns the arguments of a funtcion, like formals(), but shows default values.
+Arguments matching: exact name matching, partial name matching, positional matching.
+We use NULL to set an argument equals to epty.
+Environment: collection of pairs of symbols/values.
+The global environment is our working space. When we call an R object, it is first searched on the global environment. Then, it tries to find a match on the namespace of each of the loaded packages.
+search() ## Returns a list of loaded packages. This is the search path.
+Global environment is always the first and the base package is always the last one in the search list.
+When we load a package using library(), the namespace of this package assumes the second position on the search list, right after the global environment.
+We can change the order of the search list.
+R divides the search list in functions and non-functions. As a consequence, we can have a vector named c and a function named c.
+The free variable in a function is the one that is not an explicit argument of a function.
+Scoping rule: how R assigns values to free variables. That's what makes R different from the original S language.
+R uses lexical scoping or static scoping, in oposition to dynamic scoping.
+The values of free variables are searched in the environment where the function was defined.
+Every environment has a parent environment. The only exception is the empty environment.
+The parent environment is the following package on the search list.
+Perl and Python also use Lexical Scoping.
+As a consequence of the Lexical Scoping, in R all the objects must be stored in
+the physical memory.
+system.time() ## Returns how long (in user time and elapsed time) R took to run
+a procedure. We need to know in advance where we want to evaluate the time 
+consumed. We can pass as argument longer expressions, using {}:
+system.time({...}).
+User time: how long CPU takes to complete a task, measured in CPU relative time.
+Elapsed time: time that we actually see, feel, to complete the task.
+Rprof() ## 
+summaryRprof() ## Readable output from Rprof().
+We should not use system.time() together with Rprof().
+
+## Swirl
+## Swirl
+## Swirl
+## Swirl
+
+You can type the first two letters of the variable name, then hit the Tab key (possibly
+| more than once). Most programming environments will provide a list of variables that
+| you've created that begin with 'my'. This is called auto-completion and can be quite
+| handy when you have many variables in your workspace.
+dir.create("nome do novo diretorio") ## Creates a new directory
+file.create() ## Creates a file in the current directory. Needs the extension.
+file.exists() ## Returns TRUE if the file exists
+file.info() ## Returns information about the file
+file.rename() ## Renames a file in the working directory
+file.copy() ## Creates a copy of a file in the working directory
+file.path() ## Creates a file path independent of the operating system
+dir.create() ## Creates a directory
+dir.create(file.path("testdir2", "testdir3"), recursive = TRUE) ## The recursive
+option allows that we create a file path like ~/testdir2/testdir3.
+dir.create("../") ## Goes back one level
+## Absolute file path "/user/tkarashima/Rdir"
+## Relative file path "./Rdir"
+unlink() ## Deletes a directory in the working directory.
+unlink("testdir2", recursive = TRUE) ## Deletes "testdir2", recursive must be 
+TRUE, in this case that we have "testdir3" linked to it: ~/testdir2/testdir3
+pi:10
+[1] 3.141593 4.141593 5.141593 6.141593 7.141593 8.141593 9.141593
+seq(along.with = x) ## Creates a sequence of integers from 1 to the 
+length of the vector x. This is the same thing as seq_along(x).
+rep(x, times = n) ## Creates a sequence of vector (or number) x, n times.
+rep(c(x, y, z), each = n) ## Creates a sequence of n times x, n times y and 
+n times z.
+rep(1:3, c(2,3,5)) ## Repeat 1, two times, 2, three times and, 3,
+five times.
+Logical or: A|B (Returns True if either A or B is True)
+Logical and: A&B (Returns True only if A and B are both True)
+Logical negation: !A (Returns True if A is False)
+paste(x, collapse = " ") ## Returns one element composed of all elements of the
+vector x collapsed, separeted by a single space. The result is a vector of 
+length one.
+paste(x, y, sep = ".") ## Returns the elements of x combined with the elements 
+of y, separated by a dot: "x1.y1" "x2.y2" "x3.y3" ...
+rnorm(1000) ## Returns 1000 random elements from a std normal population.
+sample(x, 100) ## Draws a sample of size n = 100 from the vector x.
+sample(35) ## Draws a sample of size 35 from a sequence of integers from 1 to 
+35, without replacement (this is a permutation). Used to generate random 
+permutations from 1:35. The same as sample(1:35).
+my_data == NA ## Returns all NA. We should use is.na(my_data).
+| The reason you got a vector of all NAs is that NA is not really a value, but just a
+| placeholder for a quantity that is not available. Therefore the logical expression is
+| incomplete and R has no choice but to return a vector of the same length as my_data
+| that contains all NAs.
+x[!is.na(x) & x > 0] ## Returns the values of x that are not NA and that are 
+greater than zero.
+x[-c(2, 10)] ## Subseting. Returns all elements of x, except elements in 
+positions 2 and 10. This is the same as x[c(-2, -10)].
+identical(x, y) ## Returns TRUE if both objects are identical
+Matrices and data frames: rectangular data types. Matrices can only contain one
+single class of data, while data frames can consist of many different classes.
+AND operator &
+x & y ## Tests element-by-element
+TRUE && x ## Tests TRUE against the first element of x.
+isTRUE() ## Returns TRUE if the argument is true.
+which(x) ## Returns the indices or index of x that are TRUE. x must be a logical vector.
+which(x == 10) ## Returns the index (positions on the vector x), which the values match the value 10.
+Subset using which()
+mydata[ which(mydata$gender=='F' 
+& mydata$age > 65), ]
+any(x) ## Returns TRUE if at least one of the elements of x is TRUE. x is a 
+logical vector.
+all(x) ## Returns TRUE if all the elements of x are TRUE. x is a 
+logical vector.
+Function argument matching: positional, partial, exact
+Pass function as argument of another function: Fundamental!
+some_function <- function(some_other_function, x) : some_other_function is an 
+anonymous function, the is defined inside some_function.
+Passing arguments: ellipsis (dot-dot-dot) ...
+This is a strict rule in R programming: all arguments after an ellipses must have default values.
+mad_libs <- function(...){
+  # Do your argument unpacking here!
+  args <- list(...)
+  place <- args[["place"]]
+  adjective <- args[["adjective"]]
+  noun <- args[["noun"]]
+  # Don't modify any code below this comment.
+  # Notice the variables you'll need to create in order for the code below to
+  # be functional!
+  paste("News from", place, "today where", adjective, "students took to the streets in protest of the new", noun, "being installed on campus.")
+}
+Binary operators take a left and a right argument: + - * /
+Defining my own binary operator: "%any_name%" <- function(left, right) ...
+lapply(), sapply()
+| Each of the *apply functions will SPLIT up some data into smaller pieces, APPLY a
+| function to each piece, then COMBINE the results. A more detailed discussion of this
+| strategy is found in Hadley Wickham's Journal of Statistical Software paper titled 'The
+| Split-Apply-Combine Strategy for Data Analysis'.
+as.list() ## Shows a data frame as a list, separating each column by its name.
+lapply() ## Returns a list. "l": list.
+as.character(x) ## Returns a vector out of a list.
+| In general, if the result is a list where every element is of length one, then sapply()
+| returns a vector. If the result is a list where every element is a vector of the same
+| length (> 1), sapply() returns a matrix. If sapply() can't figure things out, then it
+| just returns a list, no different from what lapply() would give you.
+unique() ## Returns a vector with all duplicate elements removed.
+duplicated() ## Returns repeated occurances in a column.
+sum(duplicated(c(1,3,4,1,5,3,1)))
+Returns the number of duplicated (second and subsequent)
+occurences.
+| The only difference between previous examples and this one is that we are defining and
+| using our own function right in the call to lapply(). Our function has no name and
+| disappears as soon as lapply() is done using it. So-called 'anonymous functions' can be
+| very useful when one of R's built-in functions isn't an option.
+summary() ## Returns the summary statistics of a data set or vector
+Returns min, max, quantiles and mean for continuous variables and
+counts for categorical variables.
+| Whereas sapply() tries to 'guess' the correct format of the result, vapply() allows you
+| to specify it explicitly. If the result doesn't match the format you specify, vapply()
+| will throw an error, causing the operation to stop. This can prevent significant problems
+| in your code that might be caused by getting unexpected return values from sapply().
+| You might think of vapply() as being 'safer' than sapply(), since it requires you to
+| specify the format of the output in advance, instead of just allowing R to 'guess' what
+| you wanted. In addition, vapply() may perform faster than sapply() for large datasets.
+| However, when doing data analysis interactively (at the prompt), sapply() saves you some
+| typing and will often be good enough.
+
+When the result of FUN inside vapply is a character, we look at the number of elements, not the number of characters. So if the result of FUN is either "Yes", "No", "Maybe", we will specify for FUN.VALUE = character(1), since all these outputs are a character vector of length one, i.e. one element.
+
+object.size() ## Shows how much space the object is occupying in memory.
+sample() ## Draws a random sample with or without replacement. It can be used to
+generate permutations: sample(10) generates one single permutation from the 
+sequence 1:10.
+combn() # Generate all possible combinations of the elements of x taken m at a time (Order doesn't matter).
+combinat::permn ## generates all possible permutations (order matters) without replacement.
+gtools::permutations ## All possible permutations (order matters), with replacement.
+permutations(3,3,repeats.allowed = T) ## 3^3 = 27 permutations, with replacement
+All possible results of the roll of two dice (sample space):
+gtools::permutations(6,2,repeats.allowed=T)
+
+rbinom(1, size = 100, prob = 0.7) ## returns a single number that represents the 
+number of successes (with p = 0.7) in 100 trials.
+rbinom(100, size = 1, prob = 0.7) ## returns a vector of length 100, with each
+element representing the outcome of a single bernoulli trial.
+replicate() ## replicate any functions: replicate(100, rpois(5, 10)) replicates 
+the function rpois(5, 10) 100 times.
+replicate(4,rnorm(10)) returns a matrix 10x4 with rnorm
+replicate is from the apply family.
+colMeans() ## returns the mean of each column.
+Internally, dates are stored as the number of days since 1970-01-01
+| and times are stored as either the number of seconds since 1970-01-01 (for 'POSIXct') or
+| a list of seconds, minutes, hours, etc. (for 'POSIXlt')
+Sys.Date() ## Returns the current date
+Sys.time() ## returns the current time
+weekdays() ## Returns the day of the week in any date or time object
+months() ## Returns the month in any date or time object
+quarters() ## Returns the quarter of the year
+as.POSIXlt() ## Reads a data entry as a list (day, month, year...), instead of 
+number of seconds since 1970-01-01 (POSIXct).
+strptime() ## converts character vectors to POSIXlt. In that sense, it is similar to
+| as.POSIXlt(), except that the input doesn't have to be in a particular format
+| (YYYY-MM-DD).
+t3 <- "October 17, 1986 08:24"
+t4 <- strptime(t3, "%B %d, %Y %H:%M")
+> t4
+[1] "1986-10-17 08:24:00 PDT"
+difftime() ## Returns the time elapsed, with the option of controling the units 
+(seconds, minutes...)
+difftime(Sys.time(), t1, units = "days")
+lubridate package by Hadley Wickham
+
+month.abb # returns a vector with the abbreviation of the months
+
+confint() ## Returns a vector (matrix) with the upper and lower bounds of a 
+confidence interval.
+confint(lm4, "bachelors_r1", level = .9), where lm4 is the result of an lm(). This uses the profile log-likelihood.
+For the confidence interval with the Wald statistic use:
+confint.default()
+
+qqnorm() ## Normal probability plot (q-q plot)
+qqline() ## Normal probability plot trend line.
+rstandard() ## Returns the std residuals from a fitted linear model
+
+example() ## Load in the console the examples form the help of a function.
+
+strsplit() ## Split a string in its characters. It returns a list! To obtain a vector we should do strsplit()[[1]]
+str1 <- "My name is John"
+strsplit(str1, split = " ")
+[[1]]
+[1] "My"   "name" "is"   "John"
+
+name <- gsub(" ", "", "Thiago Machado Karashima")
+name
+[1] "ThiagoMachadoKarashima"
+
+strsplit(name, split = "")
+[[1]]
+ [1] "T" "h" "i" "a" "g" "o" "M" "a" "c" "h" "a" "d" "o" "K" "a" "r" "a" "s" "h" "i"
+[21] "m" "a"
+
+tolower(str1) ## Force all letters to lower case.
+
+Return alphabet letters:
+letters[1:8]
+letters
+LETTERS
+
+?Comparison ## Shows available comparison operators
+
+##### Coursera Cleaning Data
+##### Coursera Cleaning Data
+##### Coursera Cleaning Data
+##### Coursera Cleaning Data
+
+file.exists()
+dir.create()
+dir.create("../") ## Goes back one level
+## Absolute file path "/user/tkarashima/Rdir"
+## Relative file path "./Rdir"
+download.file()
+list.files()
+
+fname <- unzip(temp.file, list = TRUE)$Name
+unzip(temp.file, files = fname[c(1, 2, 16, 17, 18, 30, 31, 32)],
+      exdir = temp.dir, overwrite = TRUE)
+dir.path <- file.path(temp.dir, "UCI HAR Dataset")
+
+##### Coursera Expl Data Analysis
+##### Coursera Expl Data Analysis
+##### Coursera Expl Data Analysis
+##### Coursera Expl Data Analysis
+
+transform() # Good to add new variable and transform variables in data frames
+# Transformations lique log and variable classes
+airquality <- transform(airquality, Month = factor(Month))
+
+##### Coursera Reproducible Research
+##### Coursera Reproducible Research
+##### Coursera Reproducible Research
+##### Coursera Reproducible Research
+
+library(xtable) # Print table results in a more fancy way
+data(airquality)
+fit <- lm(Ozone ~ Wind + Temperature + Solar.R, data = airquality)
+xt <- xtable(summary(fit))
+print(xt, type = "html")
+state.abb : dataset containing the 50 states two-letter code
+http://rpubs.com/planewryter/97293 (nice example)
+read.csv(..., strip.white = TRUE) stips leading and trailing white spaces
+
+
+# Publishing R markdown (rmarkdown) files
+# Go to Rpubs.
+
+Extract code from R markdown to R file
+library(knitr)
+purl("/file.md")
+
+#### Data Camp
+#### Data Camp
+#### Data Camp
+#### Data Camp
+
+rowSums() ## Sums the rows of a numeric array
+It is possible to compare (<, >, ==) elements of a factor object, when its levels are ordered.
+
+%% ## Modulo operator. Tests if an integer is divisible by other.
+10 %% 2 results in 0, that is the rest of the division.
+10 %% 3 restuls in 1, the rest of the division.
+10 %% 4 results in 2
+10 %% 5 results in 0, it is divisible by 2.
+
+require() ## Similar to library, but it is useful for loading packages inside functions. It avoids errors. Require returns FALSE if the package does not exist.
+
+update.packages("packagename") ## Updates the package
+
+unlist() ## Converts a list into a vector.
+
+gsub() ## Character replacement. Replace all matches. sub() replaces only the first one found in each element
+gsub(" ", "_", "Thiago MAchado Karashima") ## Returns:
+[1] "Thiago_MAchado_Karashima"
+
+sub(" ", "_", "Thiago MAchado Karashima") ## Returns:
+[1] "Thiago_MAchado Karashima"
+
+gsub("a|i", "_", "Thiago Machado Karashima") ## Using or |
+[1] "Th__go M_ch_do K_r_sh_m_"
+
+sapply(list(runif(10), runif(10)), 
+       function(x) c(min = min(x), mean = mean(x), max = max(x))) # For a summary of the two vectors.
+
+rev() ## Reverse the order of a data structure. What is last comes to be first and what is first goes to the end.
+
+append() ## Adds elements to the end of a data structure
+
+Regular expressions:
+see ?regex
+...grep and related functions grepl, regexpr, gregexpr, sub and gsub, as well as by strsplit
+grepl() ## Search for matching patterns, specially in a character string
+
+animals <- c("cat", "dog", "rat", "giraffe", "ant", "moose")
+grepl(pattern = "a", animals) # Return a logical vector with True for those positions that contain "a" in its element.
+grepl("^a", animals) # Returns a logical with True for those elements beginning with "a".
+grepl("e$", animals) # Returns a logical vector with True for those elements ending in "e".
+
+grep() # Works as grepl, but returns the indices that are TRUE.
+
+# The emails vector has already been defined for you
+emails <- c("john.doe@ivyleague.edu", "education@world.gov", "dalai.lama@peace.org", 
+            "invalid.edu", "quant@bigdatacollege.edu", "cookie.monster@sesame.tv")
+
+# Use grep() to match for .edu addresses more robustly
+grep("@.*\\.edu$", emails)
+
+# Use grepl() to match for .edu addresses more robustly, save result to hits
+hits <- grepl("@.*\\.edu$", emails)
+
+# Subset emails using hits
+emails[hits]
+
+
+# The emails vector has already been defined for you
+emails <- c("john.doe@ivyleague.edu", "education@world.gov", "dalai.lama@peace.org", 
+            "invalid.edu", "quant@bigdatacollege.edu", "cookie.monster@sesame.tv")
+
+# Use sub() to convert the email domains to datacamp.edu (attempt 1)
+sub("@.*\\.edu$", "datacamp.edu", emails)
+
+# Use sub() to convert the email domains to datacamp.edu (attempt 2)
+sub("@.*\\.edu$", "@datacamp.edu", emails)
+
+my_date <- as.Date("1971-01-01")
+unclass(my_date)
+[1] 365 # Number of days since 1970-01-01
+
+Date/Time packages: lubridate, zoo, xts.
+
+diff() ## Calculates the difference between consecutive elements, separated by a specified lag (time series).
+
+### Time Series
+### Time Series
+### Time Series
+### Time Series
+
+cumsum() ## Returns the cummulative sum of a vector
+plot.ts() ## Plot time series
+
+Moving Average
+w = rnorm(500, 0, 1)
+v = filter(w, sides = 2, rep(1,3)/3) # moving average
+# par(mfrow = c(2,1))
+plot.ts(w)
+plot.ts(v)
+
+Autoregressions
+w = rnorm(550, 0, 1) # 50 extra to avoid startup problems
+x = filter(w, filter = c(1, -.9), method = "recursive")
+plot.ts(x[51:550])
+
+Random Walk Plot
+w = rnorm(200, 0, 1); x = cumsum(w)
+wd = w + .2; xd = cumsum(wd)
+plot.ts(xd, ylim = c(-5, 55)) # Draws the random walk with drift \delta = .2
+lines(x) # Draws the random walk (with drift \delta = 0)
+lines(.2 * (1:200), lty = "dashed")
+
+Theoretical ACF Plot
+ARMAacf()
+
+Time Series Outliers
+Package ‘tsoutliers’
+
+
+Comparison of Multiple fitted models
+Package HH : Statistical Analysis and Data Display: Heiberger and Holland
+tsdiagplot
+
+# Multiple histograms
+# Ploting Parameter definitions
+newpar1 <- par(mfrow = c(2, 1), mar = c(4, 4, 2, 1))
+# newpar1 contains the old parameter definitions
+hist(subset(pollution, region == "east")$pm25, col = "green", breaks = 30)
+hist(subset(pollution, region == "west")$pm25, col = "green", breaks = 30)
+par(newpar1) # Return to the old parameters
+
+# Alternatively, to save the default parameters:
+def.par <- par(no.readonly = TRUE) # save default, for resetting...
+
+# Scatter plot matrix with smoothed curve
+pairs(mtcars[ ,2:5], panel = panel.smooth)
+
+Lattice Library
+Conditional scatter plots
+xyplot(Life.Exp ~ Income | region, data = state, layout = c(4, 1))
+
+Plot Maps
+install.packages("maps")
+library("maps")
+texas <- ggplot2::map_data("state", region = "texas")
+texas %>% ggvis(~long, ~lat) %>% layer_paths()
+
+See Coursera_ExpDataAnalysis.R for many other plots using base,
+lattice, ggplot2.
+
+col(matrix(1:4, nrow = 2)) # Returns a matrix containing the column
+number regarding the column number of each cell.
+col(as.matrix(rock))
+This can be useful in subseting and reorganizing messed data sets
+(see HH oway/code/patient.r). In this example, we have a bad data
+set, where each row is not a single observation.
+names(rock)[col(as.matrix(rock))]
+

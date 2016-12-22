@@ -1,0 +1,415 @@
+---
+title: "Applied Linear Regression Models - Projects"
+author: "Thiago Karashima"
+date: "June 18, 2015"
+output: 
+        html_document:
+                toc: TRUE
+                theme: cerulean
+
+---
+
+This report is the result of the suggested projects from the book *Applied Linear
+Regression Models* (Kutner, Nachtsheim, Neter, 4th edition).
+
+# CDI Project
+
+Loading the data:
+```{r}
+dat <- read.table(file = "/Users/ThiagoK/Documents/Rdir/APPENC02.txt", col.names = 
+                          c("id", "county", "state", "area", "pop", "pop34", 
+                            "pop65", "phys", "beds", "crimes", "hschool", 
+                            "bachelors", "poverty", "unempl", "pcincome", 
+                            "tincome", "region"))
+attach(dat)
+str(dat)
+```
+
+## 1.43.a
+```{r}
+lm1 <- lm(phys ~ pop)
+lm2 <- lm(phys ~ beds)
+lm3 <- lm(phys ~ tincome)
+```
+
+```{r}
+summary(lm1)$coefficients
+summary(lm2)$coefficients
+summary(lm3)$coefficients
+```
+
+The estimated regression functions are the following:
+$$ 
+\begin{aligned}
+\hat{Y} &= -1.106 \times 10^2 + 2.795 \times 10^{-3} \  pop \\
+\hat{Y} &= -95.93218 + 0.74312 \ beds \\
+\hat{Y} &= -48.39485 + 0.13170 \ tincome \\
+\end{aligned}
+$$
+
+## 1.43.b
+```{r}
+plot(pop, phys)
+abline(lm1)
+
+plot(beds, phys)
+abline(lm2)
+
+plot(tincome, phys)
+abline(lm3)
+```
+
+The plots indicate that the statistical relation of each pair of response 
+and predictor variable is linear, but the error variances seem to increase
+with the predictor.
+
+Plots of residuals versus predictor variable are preferred for assessing
+nonlinearity for two reasons: other model departures can be analysed from it;
+in certain occasions it may be difficult to see nonlinearities due to the
+scaling of the axes.
+
+## 1.43.c
+```{r}
+an1 <- anova(lm1)
+an2 <- anova(lm2)
+an3 <- anova(lm3)
+```
+
+```{r}
+MSEpop <- an1$"Mean Sq"[2]
+MSEpop
+
+MSEbeds <- an2$"Mean Sq"[2]
+MSEbeds
+
+MSEtincome <- an3$"Mean Sq"[2]
+MSEtincome
+```
+
+The predictor number of hospital beds results in less variation around the fitted regression function, as we see by its lower MSE (MSEbeds).
+
+## 1.44.a
+
+```{r}
+pcincome_r1 <- subset(dat, region == 1)$pcincome
+bachelors_r1 <- subset(dat, region == 1)$bachelors
+lm4 <- lm(pcincome_r1 ~ bachelors_r1)
+
+pcincome_r2 <- subset(dat, region == 2)$pcincome
+bachelors_r2 <- subset(dat, region == 2)$bachelors
+lm5 <- lm(pcincome_r2 ~ bachelors_r2)
+
+pcincome_r3 <- subset(dat, region == 3)$pcincome
+bachelors_r3 <- subset(dat, region == 3)$bachelors
+lm6 <- lm(pcincome_r3 ~ bachelors_r3)
+
+pcincome_r4 <- subset(dat, region == 4)$pcincome
+bachelors_r4 <- subset(dat, region == 4)$bachelors
+lm7 <- lm(pcincome_r4 ~ bachelors_r4)
+```
+
+```{r}
+summary(lm4)$coefficients
+summary(lm5)$coefficients
+summary(lm6)$coefficients
+summary(lm7)$coefficients
+```
+
+The estimated regression functions are given by:
+
+$$
+\begin{aligned}
+\hat{Y} &= 9223.82 + 522.16 \ \textit{bachelors_r1} \\
+\hat{Y} &= 13581.41 + 238.67 \ \textit{bachelors_r2} \\
+\hat{Y} &= 10529.79 + 330.61 \ \textit{bachelors_r3} \\
+\hat{Y} &= 8615.05 + 440.32 \ \textit{bachelors_r4} \\
+\end{aligned}
+$$
+
+## 1.44.b
+The estimated regression functions are not similar across regions. The
+estimates for $\beta_1$ are substantially different.
+
+## 1.44.c
+```{r}
+an4 <- anova(lm4)
+an5 <- anova(lm5)
+an6 <- anova(lm6)
+an7 <- anova(lm7)
+```
+
+```{r}
+MSEbachelors_r1 <- an4$"Mean Sq"[2]
+MSEbachelors_r1
+
+MSEbachelors_r2 <- an5$"Mean Sq"[2]
+MSEbachelors_r2
+
+MSEbachelors_r3 <- an6$"Mean Sq"[2]
+MSEbachelors_r3
+
+MSEbachelors_r4 <- an7$"Mean Sq"[2]
+MSEbachelors_r4
+
+order(c(MSEbachelors_r1, MSEbachelors_r2, MSEbachelors_r3, MSEbachelors_r4))
+```
+We see that MSEbachelors_r2 is the smallest $MSE$. It means that for region 2
+we will have more precise estimates, with lower standard errors. Further, since
+$SSTO = SSR + SSE$, $SSR$ will be greater for region 2 estimated regression
+function, leading to a higher $R^2$. For region 2, taking into account the
+predictor $bachelors$ reduces the variation in $phys$ more than for the other
+three regions.
+
+## 2.62
+
+```{r}
+r_sq <- c(summary(lm1)$r.squared, summary(lm2)$r.squared, summary(lm3)$r.squared)
+names(r_sq) <- c("pop", "beds", "tincome")
+r_sq
+```
+The regression of $phys$ on $beds$ shows the highest coefficient of determination
+$R^2$, meaning that a
+greater proportion of the variation in $phys$, more than 90%, is reduced when $beds$
+is taken into account, rather than $pop$ and $tincome$.
+
+Together with the scatter plot, that suggests a linear relationship, the high
+coefficient of determination implies a got fit.
+It does not mean, however, that this regression is useful for predictions. 
+The usefulness of a regression
+function in making predictions is determined by the precision required by the
+user.
+
+
+
+## 2.63
+
+```{r}
+confint(lm4, "bachelors_r1", level = .9)
+confint(lm5, "bachelors_r2", level = .9)
+confint(lm6, "bachelors_r3", level = .9)
+confint(lm7, "bachelors_r4", level = .9)
+```
+
+The regression lines do not have similar slopes.
+For example, the slope of the regression of region 2 is significantly smaller than the slopes
+obtained for the other regions. We should keep in mind that if we want to make joint inferences we have
+to consider the appropriate corrections for simultaneous confidence intervals.
+
+## 3.25
+
+```{r}
+lm1.res <- residuals(lm1)
+lm2.res <- residuals(lm2)
+lm3.res <- residuals(lm3)
+
+lm1.res.std <- rstandard(lm1)
+lm2.res.std <- rstandard(lm2)
+lm3.res.std <- rstandard(lm3)
+```
+
+```{r}
+plot(phys, lm1.res, ylab = "Residuals", main = "Residuals: phys ~ pop")
+abline(0, 0, lty = 2)
+
+qqnorm(lm1.res.std, main = "Normal Probab: phys ~ pop")
+qqline(lm1.res.std, lty = 2)
+
+plot(phys, lm2.res, ylab = "Residuals", main = "Residuals: phys ~ beds")
+abline(0, 0, lty = 2)
+
+qqnorm(lm2.res.std, main = "Normal Probab: phys ~ beds")
+qqline(lm2.res.std, lty = 2)
+
+plot(phys, lm3.res, ylab = "Residuals", main = "Residuals: phys ~ tincome")
+abline(0, 0, lty = 2)
+
+qqnorm(lm3.res.std, main = "Normal Probab: phys ~ tincome")
+qqline(lm3.res.std, lty = 2)
+```
+
+There is strong indication of departure from the assumption of constant error
+variances, as seen on the plots of residuals against each predictor.
+
+The normal probability plots indicate the extent of the departure from the assumption
+of normality of error terms. It is clear that the departure from normality is severe.
+
+The regression model with normal probability distribution of the error terms
+is not appropriate
+for any of the three predictors. We should consider making a variable
+transformation or select a different model.
+
+## 3.26
+
+```{r}
+lm4.res <- residuals(lm4)
+lm5.res <- residuals(lm5)
+lm6.res <- residuals(lm6)
+lm7.res <- residuals(lm7)
+
+lm4.res.std <- rstandard(lm4)
+lm5.res.std <- rstandard(lm5)
+lm6.res.std <- rstandard(lm6)
+lm7.res.std <- rstandard(lm7)
+```
+
+```{r}
+plot(bachelors_r1, pcincome_r1, main = "Scatter: pcincome_r1 ~ bachelors_r1")
+abline(lm4)
+
+plot(bachelors_r1, lm4.res, ylab = "Residuals", 
+     main = "Residuals: pcincome ~ bachelors_r1")
+abline(0, 0, lty = 2)
+
+qq_r1 <- qqnorm(lm4.res.std, main = "Normal Probab: pcincome ~ bachelors_r1")
+qqline(lm4.res.std, lty = 2)
+cor(qq_r1$x, qq_r1$y); length(bachelors_r1)
+
+plot(bachelors_r2, pcincome_r2, main = "Scatter: pcincome_r2 ~ bachelors_r2")
+abline(lm5)
+
+plot(bachelors_r2, lm5.res, ylab = "Residuals", 
+     main = "Residuals: pcincome ~ bachelors_r2")
+abline(0, 0, lty = 2)
+
+qq_r2 <- qqnorm(lm5.res.std, main = "Normal Probab: pcincome ~ bachelors_r2")
+qqline(lm5.res.std, lty = 2)
+cor(qq_r2$x, qq_r2$y); length(bachelors_r2)
+
+plot(bachelors_r3, pcincome_r3, main = "Scatter: pcincome_r3 ~ bachelors_r3")
+abline(lm6)
+
+plot(bachelors_r3, lm6.res, ylab = "Residuals",
+     main = "Residuals: pcincome ~ bachelors_r3")
+abline(0, 0, lty = 2)
+
+qq_r3 <- qqnorm(lm6.res.std, main = "Normal Probab: pcincome ~ bachelors_r3")
+qqline(lm6.res.std, lty = 2)
+cor(qq_r3$x, qq_r3$y); length(bachelors_r3)
+
+plot(bachelors_r4, pcincome_r4, main = "Scatter: pcincome_r4 ~ bachelors_r4")
+abline(lm7)
+
+plot(bachelors_r4, lm7.res, ylab = "Residuals",
+     main = "Residuals: pcincome ~ bachelors_r4")
+abline(0, 0, lty = 2)
+
+qq_r4 <- qqnorm(lm7.res.std, main = "Normal Probab: pcincome ~ bachelors_r4")
+qqline(lm7.res.std, lty = 2)
+cor(qq_r4$x, qq_r4$y); length(bachelors_r4)
+
+```
+
+From the scatter plots and from the plots of residuals against the predictor
+variable, there are strong evidences of unequal error variances.
+
+Of the four regression functions, that for region 4 is the only where the violation
+of the assumption of normal distribution of error terms is not severe, despite
+the occurrence of some outliers and the increasing error variance. The
+normal plots for regions 1, 2 and 3 indicate that the distribution of the error
+is far from normal.
+
+Analysing the coefficient of correlation of the individual normal plots, we see
+that none of them reached the critical value, indicating that in all four
+regressions there is a substantial departure from normality of error terms.
+
+For $\alpha = .05$, we have:
+
+$$
+\begin{aligned}
+\ n = 103 \quad & \textrm{Critical value: }.987 \quad \textrm{Observed value: }.967 \\
+\ n = 108 \quad & \textrm{Critical value: }.987 \quad \textrm{Observed value: }.973 \\
+\ n = 152 \quad & \textrm{Critical value: }.987 \quad \textrm{Observed value: }.979 \\
+\ n = 77 \quad & \textrm{Critical value: }.984 \quad \textrm{Observed value: }.977 \\
+\end{aligned}
+$$
+
+Thus, for these regions a transformation should be
+considered before inferences can be made, or a different model should be
+employed. Since the statistical relation appears to be linear, with an
+increasing error variability along $X$, it is likely that a transformation
+in both $Y$ and $X$ will be required.
+
+## 4.26.a
+
+The Bonferroni joint confidence interval for $\beta_0$ and $\beta_1$ is given
+by:
+```{r}
+confint(lm1, level = .975)
+```
+
+## 4.26.b
+
+We cannot arbitrarily choose any value from a confidence interval.
+The best guesses for the values of the parameters
+are the unbiased point estimates $b_0$ and $b_1$.
+
+## 4.26.c
+
+```{r}
+alpha <- .1 # Family level of significance
+g <- 3 # Number of simultaneous confidence intervals in the family
+t <- qt(1 - alpha/(2 * g), length(pop) - 2)
+W <- sqrt(2 * qf(1 - alpha, 2, length(pop) - 2))
+```
+
+$$
+\begin{aligned}
+\ B &= t\:(1 - \alpha/2g,\, n-2) \\
+\ &= t\:(`r round(1 - alpha/(2 * 3), 3)` ,\, `r length(pop) - 2`) = `r round(t, 3)` \\
+\ W &= \sqrt{2F(1 - \alpha,\, n-2)} \\
+\ &= \sqrt{2F(`r round(1 - alpha, 3)`,\, `r length(pop) - 2`)} = `r round(W, 3)` \\
+\end{aligned}
+$$
+
+Bonferroni procedure is more efficient.
+We see that the Bonferroni confidence intervals will be slightly tighter than
+the Working-Hotelling intervals, since $B < W$ and:
+
+$$
+\begin{aligned}
+\ \hat{Y}_h &\pm \, B \, s\{\hat{Y}_h\} \\
+\ \hat{Y}_h &\pm \, W \, s\{\hat{Y}_h\} \\
+\end{aligned}
+$$
+
+If the number of simultaneous confidence intervals in the family were larger,
+say $g = 4$, than the Working-Hotelling confidence intervals would be tighter
+than the Bonferroni intervals, since $B > W$:
+
+```{r}
+alpha <- .1 # Family level of significance
+g <- 4 # Number of simultaneous confidence intervals in the family
+t <- qt(1 - alpha/(2 * g), length(pop) - 2)
+W <- sqrt(2 * qf(1 - alpha, 2, length(pop) - 2))
+```
+
+$$
+\begin{aligned}
+\ B &= t\:(1 - \alpha/2g,\, n-2) \\
+\ &= t\:(`r round(1 - alpha/(2 * 3), 3)` ,\, `r length(pop) - 2`) = `r round(t, 3)` \\
+\ W &= \sqrt{2F(1 - \alpha,\, n-2)} \\
+\ &= \sqrt{2F(`r round(1 - alpha, 3)`,\, `r length(pop) - 2`)} = `r round(W, 3)` \\
+\end{aligned}
+$$
+
+## 4.26.d
+
+The Bonferroni family confidence intervals, for a confidence coefficient of
+$\alpha = `r 1-alpha`$ and $g = 3$ are:
+
+```{r}
+predic.values <- c(500e+03, 1000e+03, 5000e+03)
+g <- length(predic.values)
+bonf.level <- 1 - alpha/g
+nd <- data.frame(pop = predic.values, level = bonf.level)
+predict(lm1, interval = "confidence", newdata = nd)
+```
+
+Each interval statement has a confidence coefficient of `r round(bonf.level, 3)`.
+We can interpret the family of confidence intervals as follows. We draw
+many samples and fit a corresponding linear regression for each; from each
+linear regression function we determine the $1-\alpha$ family of confidence
+intervals, for the same levels of $X$ values; $(1-\alpha)100$ percent of the
+families of confidence intervals will tend to have all statements simultaneously
+correct, i.e. include the true values of the means.
+
